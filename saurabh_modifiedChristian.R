@@ -51,42 +51,40 @@ all_false <- function(thres,trace,window=4800) {
   
 }
 
-################################################################ Set working directory where I saved the data   ##################################################
-
-#setwd("C:/Users/LocalAdmin/Desktop/new_screens/all")
-#setwd("C:/Users/LocalAdmin/Desktop/new_screens/AMANDA/amanda_all")
-#setwd("C:/Users/LocalAdmin/Desktop/new_screens/SAURABH/saurabh_all")
-setwd("C:/Users/LocalAdmin/Desktop/new_screens/mixed/mixed_all")
 ########################################## Initialize some parameters  ###########################################
+
+## Set initial parameters
+data_path<-"C:/Users/chise/Desktop/mixed_all/"
+flat_thres <- 0.8
+PI_thres <- 2 #no flies rejected on this basis
+#Hysteresis <- as.numeric(as.character(info$V3[19]))  # Hysteresis of the experiment
+Hysteresis <- 0
+filename_data<-"/mixed_all.txt"
+# setwd("C:/Users/LocalAdmin/Desktop/new_screens/mixed/mixed_all")
 
 
 #tested_flies <- read.table("C:/Users/LocalAdmin/Desktop/new_screens/all/all.txt", quote="\"", comment.char="")
 #tested_flies <- read.table("C:/Users/LocalAdmin/Desktop/new_screens/AMANDA/amanda_all/amanda_all.txt", quote="\"", comment.char="")
 #tested_flies <- read.table("C:/Users/LocalAdmin/Desktop/new_screens/SAURABH/saurabh_all/saurabh_all.txt", quote="\"", comment.char="")
-tested_flies <- read.table("C:/Users/LocalAdmin/Desktop/new_screens/mixed/mixed_all/mixed_all.txt", quote="\"", comment.char="")
+tested_flies <- read.table(paste0(data_path,filename_data), quote="\"", comment.char="")
 all_screens <- unique(tested_flies$V2)
 no_of_screens <- length(all_screens)
 skip<-37
-flat_thres <- 0.8
-PI_thres <- 2 #no flies rejected on this basis
-#j <- 0 #initializing the screen number variable
-#x<-0
+
+
+
+########################################################### Allocate variables  ###################################################################
 on_wiggle1<- NA
 on_wiggle2<- NA
 on_wiggle3 <- NA
-
 
 off_wiggle1<- NA
 off_wiggle2<- NA
 off_wiggle3 <- NA
 
-
 #message("please enter the number of experiments")
 #Nexp <- scan(n=1,what= numeric())   #Number of flies
-
-Nexp_total <- 40 # they won´t be more experiment than these #round(length(tested_flies$V1)/no_of_screens)*4
-
-
+Nexp_total <- 40 # they wonÂ´t be more experiment than these #round(length(tested_flies$V1)/no_of_screens)*4
 #effectsize <- as.numeric(rep(NA,3*Nexp_total)) # Saurabh variable defining effectsize score
 effectsize_mat <- matrix(NA, 3*Nexp_total, no_of_screens)
 just_rein_mat <- matrix(NA, 3*Nexp_total, no_of_screens)
@@ -101,264 +99,24 @@ all_PIs <- as.numeric(rep(NA,10))
 for(j in 1:no_of_screens)
   
 {
-  #pos <- 0 #saurabhdefining variable for mean position
-  count <- 0 #Saurabh defining a variable that keeps a count of the number of graphs taken 
+  count <- 0 #Defining a variable that keeps a count of the number of graphs taken 
   
-  Nexp <- length(tested_flies$V1[tested_flies$V2==all_screens[j]])
-  data_files <- as.character(tested_flies$V1[tested_flies$V2==all_screens[j]])
+  ## Groupname
+  group_name <- all_screens[j]
+  
+  ## Number of experiments in the group. Each experiments runs three platforms at once
+  Nexp <- length(tested_flies$V1[tested_flies$V2==group_name])
+  
+  ## Filenames from group
+  data_files <- as.character(tested_flies$V1[tested_flies$V2==group_name])
   #effectsize <- as.numeric(rep(NA,3*Nexp))
   #on_wiggle <- as.numeric(rep(NA,3*Nexp))
   #off_wiggle <- as.numeric(rep(NA,3*Nexp))
-  #### This seems to me not well coded. By Christian Rohrsen
+
+  PI_platform <- matrix(NA, 3*Nexp, 10)    # Variable where PIs are saved for each of the ten segments
+  combo_PI_platform <- matrix(NA, 3*Nexp, 5) # Variable where the mean of PI's are stored each double segments. There is always two equal consecutive segments
   
-  # if(all_screens[j]=="blue1")
-  # {
-  #   Nexp <- length(tested_flies$V1[tested_flies$V2=="blue1"])
-  #   x <- 0
-  #   
-  # }
-  # 
-  # if(all_screens[j]=="blue3")
-  # {
-  #   Nexp <- length(tested_flies$V1[tested_flies$V2=="blue3"])
-  #   x <- length(tested_flies$V1[tested_flies$V2=="blue1"]) +x
-  #   
-  # }
-  # 
-  # if(all_screens[j]=="blue4")
-  # {
-  #   Nexp <- length(tested_flies$V1[tested_flies$V2=="blue4"])
-  #   x <- length(tested_flies$V1[tested_flies$V2=="blue3"]) +x
-  #   
-  # }
-  # 
-  # if(all_screens[j]=="darkgreen1")
-  # {
-  #   
-  #   Nexp <- length(tested_flies$V1[tested_flies$V2=="darkgreen1"])
-  #   x <- length(tested_flies$V1[tested_flies$V2=="blue4"])+x
-  #   
-  # }
-  # 
-  # if(all_screens[j]=="darkgreen2")
-  # {
-  #   
-  #   Nexp <- length(tested_flies$V1[tested_flies$V2=="darkgreen2"])
-  #   x <- length(tested_flies$V1[tested_flies$V2=="darkgreen1"])+x
-  #   
-  # }
-  # 
-  # if(all_screens[j]=="darkgreen3")
-  # {
-  #   
-  #   Nexp <- length(tested_flies$V1[tested_flies$V2=="darkgreen3"])
-  #   x <- length(tested_flies$V1[tested_flies$V2=="darkgreen2"])+x
-  #   
-  # }
-  # 
-  # if(all_screens[j]== "darkpink1")
-  # {
-  #   
-  #   Nexp <- length(tested_flies$V1[tested_flies$V2=="darkpink1"])
-  #   x <- length(tested_flies$V1[tested_flies$V2=="darkgreen3"])+x
-  #   
-  # }
-  # 
-  # if(all_screens[j]=="darkpink2")
-  # {
-  #   
-  #   Nexp <- length(tested_flies$V1[tested_flies$V2=="darkpink2"])
-  #   x <- length(tested_flies$V1[tested_flies$V2== "darkpink2"])+x
-  #   
-  # }
-  # 
-  # 
-  # if(all_screens[j]=="darkpink3")
-  # {
-  #   
-  #   
-  #   Nexp <- length(tested_flies$V1[tested_flies$V2=="darkpink3"])
-  #   x <- length(tested_flies$V1[tested_flies$V2=="darkpink2"])+x
-  #   
-  # }
-  # 
-  # if(all_screens[j]=="darkpink4")
-  # {
-  #   
-  #   
-  #   Nexp <- length(tested_flies$V1[tested_flies$V2=="darkpink4"])
-  #   x <- length(tested_flies$V1[tested_flies$V2=="darkpink3"])+x
-  #   
-  # }
-  # 
-  # if(all_screens[j]=="darkyellow1")
-  # {
-  #   
-  #   Nexp <- length(tested_flies$V1[tested_flies$V2=="darkyellow1"])
-  #   x <- length(tested_flies$V1[tested_flies$V2=="darkpink4"])+x
-  #   
-  # }
-  # 
-  # if(all_screens[j]=="darkyellow2")
-  # {
-  #   
-  #   
-  #   Nexp <- length(tested_flies$V1[tested_flies$V2=="darkyellow2"])
-  #   x <- length(tested_flies$V1[tested_flies$V2=="darkyellow1"])+x
-  #   
-  # }
-  # 
-  # if(all_screens[j]=="darkyellow3")
-  # {
-  #   
-  #   
-  #   Nexp <- length(tested_flies$V1[tested_flies$V2=="darkyellow3"])
-  #   x <- length(tested_flies$V1[tested_flies$V2=="darkyellow2"])+x
-  #   
-  # }
-  # 
-  # if(all_screens[j]=="darkyellow4")
-  # {
-  #   
-  #   
-  #   Nexp <- length(tested_flies$V1[tested_flies$V2=="darkyellow4"])
-  #   x <- length(tested_flies$V1[tested_flies$V2=="darkyellow3"])+x
-  #   
-  # }
-  # 
-  # if(all_screens[j]=="lightgreen1")
-  # {
-  #   
-  #   
-  #   Nexp <- length(tested_flies$V1[tested_flies$V2=="lightgreen1"])
-  #   x <- length(tested_flies$V1[tested_flies$V2=="darkyellow4"])+x
-  #   
-  # }
-  # 
-  # if(all_screens[j]=="lightgreen2")
-  # {
-  #   
-  #   
-  #   Nexp <- length(tested_flies$V1[tested_flies$V2=="lightgreen2"])
-  #   x <- length(tested_flies$V1[tested_flies$V2=="lightgreen1"])+x
-  #   
-  # }
-  # 
-  # if(all_screens[j]=="lightgreen4")
-  # {
-  #   
-  #   
-  #   Nexp <- length(tested_flies$V1[tested_flies$V2=="lightgreen4"])
-  #   x <- length(tested_flies$V1[tested_flies$V2=="lightgreen2"])+x
-  #   
-  # }
-  # 
-  # if(all_screens[j]=="lightyellow2")
-  # {
-  #   
-  #   
-  #   Nexp <- length(tested_flies$V1[tested_flies$V2=="lightyellow2"])
-  #   x <- length(tested_flies$V1[tested_flies$V2=="lightgreen4"])+x
-  #   
-  # }
-  # 
-  # if(all_screens[j]=="orange1")
-  # {
-  #   
-  #   
-  #   Nexp <- length(tested_flies$V1[tested_flies$V2=="orange1"])
-  #   x <- length(tested_flies$V1[tested_flies$V2=="lightyellow2"])+x
-  #   
-  # }
-  # 
-  # if(all_screens[j]=="orange2")
-  # {
-  #   
-  #   
-  #   Nexp <- length(tested_flies$V1[tested_flies$V2=="orange2"])
-  #   x <- length(tested_flies$V1[tested_flies$V2=="orange1"])+x
-  #   
-  # }
-  # 
-  # if(all_screens[j]=="orange3")
-  # {
-  #   
-  #   
-  #   Nexp <- length(tested_flies$V1[tested_flies$V2=="orange3"])
-  #   x <- length(tested_flies$V1[tested_flies$V2=="orange2"])+x
-  #   
-  # }
-  # 
-  # if(all_screens[j]=="orange4")
-  # {
-  #   
-  #   
-  #   Nexp <- length(tested_flies$V1[tested_flies$V2=="orange4"])
-  #   x <- length(tested_flies$V1[tested_flies$V2=="orange3"])+x
-  #   
-  # }
-  # 
-  # if(all_screens[j]=="red1")
-  # {
-  #   
-  #   
-  #   Nexp <- length(tested_flies$V1[tested_flies$V2=="red1"])
-  #   x <- length(tested_flies$V1[tested_flies$V2=="orange4"])+x
-  #   
-  # }
-  # 
-  # 
-  # if(all_screens[j]=="red2")
-  # {
-  #   
-  #   
-  #   Nexp <- length(tested_flies$V1[tested_flies$V2=="red2"])
-  #   x <- length(tested_flies$V1[tested_flies$V2=="red1"])+x
-  #   
-  # }
-  # 
-  # if(all_screens[j]=="red3")
-  # {
-  #   
-  #   
-  #   Nexp <- length(tested_flies$V1[tested_flies$V2=="red3"])
-  #   x <- length(tested_flies$V1[tested_flies$V2=="red2"])+x
-  #   
-  # }
-  # 
-  # if(all_screens[j]=="white1")
-  # {
-  #   
-  #   
-  #   Nexp <- length(tested_flies$V1[tested_flies$V2=="white1"])
-  #   x <- length(tested_flies$V1[tested_flies$V2=="red3"])+x
-  #   
-  # }
-  # 
-  # if(all_screens[j]=="white2")
-  # {
-  #   
-  #   
-  #   Nexp <- length(tested_flies$V1[tested_flies$V2=="white2"])
-  #   x <- length(tested_flies$V1[tested_flies$V2=="white1"])+x
-  #   
-  # }
-  # 
-  # if(all_screens[j]=="positivecontrol")
-  # {
-  #   
-  #   
-  #   Nexp <- length(tested_flies$V1[tested_flies$V2=="positivecontrol1"])
-  #   x <- length(tested_flies$V1[tested_flies$V2=="white2"])+x
-  #   
-  # }
-  
-  
-  
-  PI_platform <- matrix(NA, 3*Nexp, 10)    # Variable where PIs are saved
-  combo_PI_platform <- matrix(NA, 3*Nexp, 5) # Saurabh variable where the mean of PI's are stored for 2-2 segments
-  
-  
+  ## Allocating vectors to save data
   on_wiggle <- as.numeric(rep(NA,3*Nexp))
   off_wiggle <- as.numeric(rep(NA,3*Nexp))
   diff_wiggle <- as.numeric(rep(NA,3*Nexp))
@@ -366,9 +124,6 @@ for(j in 1:no_of_screens)
   effectsize <- as.numeric(rep(NA,3*Nexp)) # Saurabh variable defining effectsize score
   effectsize_reinf <- as.numeric(rep(NA,3*Nexp)) # Saurabh variable defining effectsize score
 
-  ######saurabh defining wiggle
-  group_name <- all_screens[j]
-  
   # Start a for loop for the number of flies to analyze
   for(i in 1:Nexp){
     #group_name <- tested_flies$V2[i]   #Name of the group
@@ -381,14 +136,14 @@ for(j in 1:no_of_screens)
     
     #data <- read.table(as.character(tested_flies$V1[x+i]), header = FALSE, sep = "\t", quote = "\"" , dec = ".", fill = TRUE, skip = skip , comment.char = "", nrows = 24037-skip,col.names=c("n","t.s.","pos1","pos2","pos3"))
     #group_name <- tested_flies$V2[x+i]   #Name of the group
-    data <- read.table(data_files[i], header = FALSE, sep = "\t", quote = "\"" , dec = ".", fill = TRUE, skip = skip , comment.char = "", nrows = 24037-skip,col.names=c("n","t.s.","pos1","pos2","pos3"))
+    data <- read.table(paste0(data_path,data_files[i]), header = FALSE, sep = "\t", quote = "\"" , dec = ".", fill = TRUE, skip = skip , comment.char = "", nrows = 24037-skip,col.names=c("n","t.s.","pos1","pos2","pos3"))
     
     
     
     ################################### Import in a dataframe the information of the experiments. ############################################
     
     
-    info <-read.table(data_files[i], header = FALSE, sep = "", 
+    info <-read.table(paste0(data_path,data_files[i]), header = FALSE, sep = "", 
                       col.names = paste0("V",seq_len(20)), fill = TRUE)
     info  <- info[1:20,]
     
@@ -396,14 +151,12 @@ for(j in 1:no_of_screens)
     ######################################## Extracting some parameters from the meta data #########################################
     
     lengthExp <- length(data$t.s.)     # Number of data points
-    #Hysteresis <- as.numeric(as.character(info$V3[19]))  # Hysteresis of the experiment
-    Hysteresis <- 0
-    
-    # Side of light for each platform
+    # Side of the platform for turning the optogenetic light on, for each platform
     light_side1 <- c(as.character(info$V3[6]),as.character(info$V4[6]),as.character(info$V5[6]),as.character(info$V6[6]),as.character(info$V7[6]),as.character(info$V8[6]),as.character(info$V9[6]),as.character(info$V10[6]),as.character(info$V11[6]),as.character(info$V12[6])) 
     light_side2 <- c(as.character(info$V3[10]),as.character(info$V4[10]),as.character(info$V5[10]),as.character(info$V6[10]),as.character(info$V7[10]),as.character(info$V8[10]),as.character(info$V9[10]),as.character(info$V10[10]),as.character(info$V11[10]),as.character(info$V12[10])) 
     light_side3 <- c(as.character(info$V3[14]),as.character(info$V4[14]),as.character(info$V5[14]),as.character(info$V6[14]),as.character(info$V7[14]),as.character(info$V8[14]),as.character(info$V9[14]),as.character(info$V10[14]),as.character(info$V11[14]),as.character(info$V12[14])) 
     
+    # If all true it means that the three experiments were ran with the lights switched on when platform moves right
     right_platform1 <- all(light_side1=="right")
     right_platform2 <- all(light_side2=="right")
     right_platform3 <- all(light_side3=="right")
@@ -415,8 +168,7 @@ for(j in 1:no_of_screens)
     
     ######################################### Plot platform traces and decide which to keep for further analysis ############################################
     
-    # Segment rechnen und plotten mit dem trace
-    
+    # Segment datapoint rechnen und plotten mit dem trace
     segment<- seq(from = 0,to = lengthExp, lengthExp/10)
     #sau_segment<- seq(from = 0,to = lengthExp, lengthExp/5) #saurabh  
     
@@ -452,13 +204,14 @@ for(j in 1:no_of_screens)
     if(right_platform2==FALSE){ data$state2 <- !data$state2}
     if(right_platform3==FALSE){ data$state3 <- !data$state3}
     
-    # Condition 1 for the flat line
+    # Test Condition 1: if the platform signal stay too long flat, we want to discard results
     keep1<-all_false(flat_thres,data$pos1)
     keep2<-all_false(flat_thres,data$pos2)
     keep3<-all_false(flat_thres,data$pos3)
     
-    # Condition 2: Calculate PIs and sort the ones with good pretest
+    ## Condition 2: Calculate PIs and sort the ones with good pretest
     
+    # Allocate PI vectors
     PI_platform1 <- vector("numeric", length = 10)
     #combo_PI_platform1 <- vector("numeric", length = 5)
     PI_platform2 <- vector("numeric", length = 10)
@@ -466,15 +219,17 @@ for(j in 1:no_of_screens)
     PI_platform3 <- vector("numeric", length = 10)
     #combo_PI_platform3 <- vector("numeric", length = 5)
     
-    
+    # Allocate effect size vectors
     effectsize1 <- vector("numeric", 1)
     effectsize2 <- vector("numeric", 1)
     effectsize3 <- vector("numeric", 1)
     
+    ## Calculate the wiggle as a measure of locomotory/activity state
     wiggle1<-abs(diff(data$pos1))
     wiggle2<-abs(diff(data$pos2))
     wiggle3<-abs(diff(data$pos3))
     
+    ## Calculate the wiggle for each of the two treatments: lights on/off. 
     on_wiggle1 <- mean(wiggle1[data$state1[-24000]])
     off_wiggle1 <- mean(wiggle1[!data$state1[-24000]])
     on_wiggle2 <- mean(wiggle2[data$state2[-24000]])
@@ -533,7 +288,7 @@ for(j in 1:no_of_screens)
     #   }
     # }
     
-    
+    ## Apply the PI formula and save it
     for(oo in 1:10){
       PI_platform1[oo] <- calculate_PI(data$state1[segment[oo]:segment[oo+1]])
       PI_platform2[oo] <- calculate_PI(data$state2[segment[oo]:segment[oo+1]])
@@ -546,21 +301,24 @@ for(j in 1:no_of_screens)
     #   combo_PI_platform3[oo] <- calculate_PI(data$state3[segment[oo]:segment[oo+2]])
     # }
     
+    ## Calculate the effect size by substracting the initial baseline (segments 1 and 2) to the training Periods (3,4,7,8)
     effectsize1 <- mean(PI_platform1[c(3,4,7,8)])-mean(PI_platform1[1:2])
     effectsize2 <- mean(PI_platform2[c(3,4,7,8)])-mean(PI_platform2[1:2])
     effectsize3 <- mean(PI_platform3[c(3,4,7,8)])-mean(PI_platform3[1:2])
     
+    ## Get the PIs the training Periods (3,4,7,8) but without normalizing by initial baseline
     just_reinf1 <- mean(PI_platform1[c(3,4,7,8)])
     just_reinf2 <- mean(PI_platform2[c(3,4,7,8)])
     just_reinf3 <- mean(PI_platform3[c(3,4,7,8)])
     
-    # Condition 3: Tally light encounters in the first training period
+    # Condition 3: we set a threshold of number of light switching to make sure the fly had the opportunity to explore both sides enough.
+    # Tally light encounters in the first training period
     light_encounter1 <- sum(abs(diff(data$state1[(lengthExp/5):((lengthExp*2)/5)])))
     light_encounter2 <- sum(abs(diff(data$state2[(lengthExp/5):((lengthExp*2)/5)])))
     light_encounter3 <- sum(abs(diff(data$state3[(lengthExp/5):((lengthExp*2)/5)])))
     
     
-    
+    ## Here all conditions should be met: No flat signal, good baseline pretest PI and enough switching 
     if(keep1 && abs(mean(PI_platform1[1:2]))<PI_thres & light_encounter1>2){
       count<-count+1
       #pos <- pos + data$pos1
