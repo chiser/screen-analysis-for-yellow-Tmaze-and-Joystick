@@ -54,23 +54,92 @@ all_false <- function(thres,trace,window=4800) {
 ########################################## Initialize some parameters  ###########################################
 
 ## Set initial parameters
-data_path<-"C:/Users/chise/Desktop/mixed_all/"
+data_path<-"C:/Users/chise/Desktop/screen-analysis-for-yellow-Tmaze-and-Joystick/data/Joystick/"
 flat_thres <- 0.8
 PI_thres <- 2 #no flies rejected on this basis
-#Hysteresis <- as.numeric(as.character(info$V3[19]))  # Hysteresis of the experiment
 Hysteresis <- 0
-filename_data<-"/mixed_all.txt"
-# setwd("C:/Users/LocalAdmin/Desktop/new_screens/mixed/mixed_all")
+filename_data<-"all.txt"
 
-
-#tested_flies <- read.table("C:/Users/LocalAdmin/Desktop/new_screens/all/all.txt", quote="\"", comment.char="")
-#tested_flies <- read.table("C:/Users/LocalAdmin/Desktop/new_screens/AMANDA/amanda_all/amanda_all.txt", quote="\"", comment.char="")
-#tested_flies <- read.table("C:/Users/LocalAdmin/Desktop/new_screens/SAURABH/saurabh_all/saurabh_all.txt", quote="\"", comment.char="")
 tested_flies <- read.table(paste0(data_path,filename_data), quote="\"", comment.char="")
 all_screens <- unique(tested_flies$V2)
 no_of_screens <- length(all_screens)
 skip<-37
+barplot_title <- "all experiments"
 
+unblind <- TRUE
+
+if (unblind){
+  
+  all_screens <- gsub("orange1", "TH", all_screens)
+  all_screens <- gsub("orange2", "mb304b", all_screens)
+  all_screens <- gsub("orange3", "mb109b", all_screens)
+  all_screens <- gsub("orange4", "58E02", all_screens)
+  all_screens <- gsub("blue1", "TH-D'", all_screens)
+  all_screens <- gsub("blue2", "TH-D1", all_screens)
+  all_screens <- gsub("blue3", "TH-D4", all_screens)
+  all_screens <- gsub("blue4", "TH-F3", all_screens)
+  all_screens <- gsub("positivecontrol", "Gr28bd+TrpA1", all_screens)
+  all_screens <- gsub("lightyellow2", "NP5272", all_screens)
+  all_screens <- gsub("lightyellow3", "MZ840", all_screens)
+  all_screens <- gsub("lightyellow4", "TH-C'", all_screens)
+  all_screens <- gsub("darkgreen1", "mb315c", all_screens)
+  all_screens <- gsub("darkgreen2", "TH-D1", all_screens)
+  all_screens <- gsub("darkgreen3", "mb299b", all_screens)
+  all_screens <- gsub("red1", "5htr1b", all_screens)
+  all_screens <- gsub("red2", "TH-G80+TH-G4", all_screens)
+  all_screens <- gsub("red3", "mb025b", all_screens)
+  all_screens <- gsub("red4", "mb060b", all_screens)
+  all_screens <- gsub("lightgreen1", "mb056b", all_screens)
+  all_screens <- gsub("lightgreen2", "mb312b", all_screens)
+  all_screens <- gsub("lightgreen3", "mb032b", all_screens)
+  all_screens <- gsub("lightgreen4", "mb065b", all_screens)
+  all_screens <- gsub("darkyellow1", "NP47", all_screens)
+  all_screens <- gsub("darkyellow2", "NP1528", all_screens)
+  all_screens <- gsub("darkyellow3", "TH-C1+TH-F1", all_screens)
+  all_screens <- gsub("darkyellow4", "DDC(HL9)", all_screens)
+  all_screens <- gsub("darkpink1", "MZ19", all_screens)
+  all_screens <- gsub("darkpink2", "TH-F1", all_screens)
+  all_screens <- gsub("darkpink3", "TH-F2", all_screens)
+  all_screens <- gsub("darkpink4", "DDC(HL8)", all_screens)
+  all_screens <- gsub("white1", "TH-G1", all_screens)
+  all_screens <- gsub("white2", "NP6510", all_screens)
+  
+  tested_flies$V2 <- gsub("orange1", "TH", tested_flies$V2)
+  tested_flies$V2 <- gsub("orange2", "mb304b", tested_flies$V2)
+  tested_flies$V2 <- gsub("orange3", "mb109b", tested_flies$V2)
+  tested_flies$V2 <- gsub("orange4", "58E02", tested_flies$V2)
+  tested_flies$V2 <- gsub("blue1", "TH-D'", tested_flies$V2)
+  tested_flies$V2 <- gsub("blue2", "TH-D1", tested_flies$V2)
+  tested_flies$V2 <- gsub("blue3", "TH-D4", tested_flies$V2)
+  tested_flies$V2 <- gsub("blue4", "TH-F3", tested_flies$V2)
+  tested_flies$V2 <- gsub("positivecontrol", "Gr28bd+TrpA1", tested_flies$V2)
+  tested_flies$V2 <- gsub("lightyellow2", "NP5272", tested_flies$V2)
+  tested_flies$V2 <- gsub("lightyellow3", "MZ840", tested_flies$V2)
+  tested_flies$V2 <- gsub("lightyellow4", "TH-C'", tested_flies$V2)
+  tested_flies$V2 <- gsub("darkgreen1", "mb315c", tested_flies$V2)
+  tested_flies$V2 <- gsub("darkgreen2", "TH-D1", tested_flies$V2)
+  tested_flies$V2 <- gsub("darkgreen3", "mb299b", tested_flies$V2)
+  tested_flies$V2 <- gsub("red1", "5htr1b", tested_flies$V2)
+  tested_flies$V2 <- gsub("red2", "TH-G80+TH-G4", tested_flies$V2)
+  tested_flies$V2 <- gsub("red3", "mb025b", tested_flies$V2)
+  tested_flies$V2 <- gsub("red4", "mb060b", tested_flies$V2)
+  tested_flies$V2 <- gsub("lightgreen1", "mb056b", tested_flies$V2)
+  tested_flies$V2 <- gsub("lightgreen2", "mb312b", tested_flies$V2)
+  tested_flies$V2 <- gsub("lightgreen3", "mb032b", tested_flies$V2)
+  tested_flies$V2 <- gsub("lightgreen4", "mb065b", tested_flies$V2)
+  tested_flies$V2 <- gsub("darkyellow1", "NP47", tested_flies$V2)
+  tested_flies$V2 <- gsub("darkyellow2", "NP1528", tested_flies$V2)
+  tested_flies$V2 <- gsub("darkyellow3", "TH-C1+TH-F1", tested_flies$V2)
+  tested_flies$V2 <- gsub("darkyellow4", "DDC(HL9)", tested_flies$V2)
+  tested_flies$V2 <- gsub("darkpink1", "MZ19", tested_flies$V2)
+  tested_flies$V2 <- gsub("darkpink2", "TH-F1", tested_flies$V2)
+  tested_flies$V2 <- gsub("darkpink3", "TH-F2", tested_flies$V2)
+  tested_flies$V2 <- gsub("darkpink4", "DDC(HL8)", tested_flies$V2)
+  tested_flies$V2 <- gsub("white1", "TH-G1", tested_flies$V2)
+  tested_flies$V2 <- gsub("white2", "NP6510", tested_flies$V2)
+  
+  
+}
 
 
 ########################################################### Allocate variables  ###################################################################
@@ -82,16 +151,12 @@ off_wiggle1<- NA
 off_wiggle2<- NA
 off_wiggle3 <- NA
 
-#message("please enter the number of experiments")
-#Nexp <- scan(n=1,what= numeric())   #Number of flies
-Nexp_total <- 40 # they wonÂ´t be more experiment than these #round(length(tested_flies$V1)/no_of_screens)*4
-#effectsize <- as.numeric(rep(NA,3*Nexp_total)) # Saurabh variable defining effectsize score
+
+Nexp_total <- 40 # they won´t be more experiment than these #round(length(tested_flies$V1)/no_of_screens)*4
 effectsize_mat <- matrix(NA, 3*Nexp_total, no_of_screens)
 just_rein_mat <- matrix(NA, 3*Nexp_total, no_of_screens)
 used_traces <- as.numeric(rep(NA,no_of_screens))
 
-#on_wiggle <- as.numeric(rep(NA,3*Nexp_total))
-#off_wiggle <- as.numeric(rep(NA,3*Nexp_total))
 on_wiggle_mat <- matrix(NA, 3*Nexp_total, no_of_screens)
 off_wiggle_mat <- matrix(NA, 3*Nexp_total, no_of_screens)
 all_PIs <- as.numeric(rep(NA,10))
@@ -109,9 +174,6 @@ for(j in 1:no_of_screens)
   
   ## Filenames from group
   data_files <- as.character(tested_flies$V1[tested_flies$V2==group_name])
-  #effectsize <- as.numeric(rep(NA,3*Nexp))
-  #on_wiggle <- as.numeric(rep(NA,3*Nexp))
-  #off_wiggle <- as.numeric(rep(NA,3*Nexp))
 
   PI_platform <- matrix(NA, 3*Nexp, 10)    # Variable where PIs are saved for each of the ten segments
   combo_PI_platform <- matrix(NA, 3*Nexp, 5) # Variable where the mean of PI's are stored each double segments. There is always two equal consecutive segments
@@ -131,11 +193,7 @@ for(j in 1:no_of_screens)
     
     ############################## Import in a dataframe just the values. ################################
     
-    #data <- read.table(file.choose(), header = FALSE, sep = "\t", quote = "\"" , dec = ".", fill = TRUE, skip = skip , comment.char = "", nrows = 24037-skip,col.names=c("n","t.s.","pos1","pos2","pos3"))
-    
-    
-    #data <- read.table(as.character(tested_flies$V1[x+i]), header = FALSE, sep = "\t", quote = "\"" , dec = ".", fill = TRUE, skip = skip , comment.char = "", nrows = 24037-skip,col.names=c("n","t.s.","pos1","pos2","pos3"))
-    #group_name <- tested_flies$V2[x+i]   #Name of the group
+
     data <- read.table(paste0(data_path,data_files[i]), header = FALSE, sep = "\t", quote = "\"" , dec = ".", fill = TRUE, skip = skip , comment.char = "", nrows = 24037-skip,col.names=c("n","t.s.","pos1","pos2","pos3"))
     
     
@@ -164,36 +222,15 @@ for(j in 1:no_of_screens)
     TimeExp <- data$t.s.[lengthExp]   # The total time it took for the experiment to complete
     data$Sampling<-c(0,diff(data$t.s., lag = 1)) # Calculating Inter Sample intervals (ISI)
     MaxSample<-max(data$Sampling)  # Checking what it the maximal ISI
-    #plot(data[[2]]~data[[1]], type="l")  # This graph show how homogeneous was the sampling rate
-    
+
     ######################################### Plot platform traces and decide which to keep for further analysis ############################################
     
     # Segment datapoint rechnen und plotten mit dem trace
     segment<- seq(from = 0,to = lengthExp, lengthExp/10)
-    #sau_segment<- seq(from = 0,to = lengthExp, lengthExp/5) #saurabh  
-    
-    #plot(data$n,data$pos1, type = "l",xlab = "data points",ylab = "Position", main = "Platform 1")       ################# Amanda ####################
-    #abline(v = segment, untf = FALSE, col="red",lwd=3)
-    #message("please enter T for keeping the fly for analysis and F for deleting it and press enter")     ################# Amanda ####################
-    #keep_fly1 <- scan(n=1,what= logical())
-    
-    #plot(data$n,data$pos2, type = "l",xlab = "data points",ylab = "Position", main = "Platform 2")       ################# Amanda ####################
-    #abline(v = segment, untf = FALSE, col="red",lwd=3)                                                   ################# Amanda ####################
-    #message("please enter T for keeping the fly for analysis and F for deleting it and press enter")          
-    #keep_fly2 <- scan(n=1,what= logical())
-    
-    #plot(data$n,data$pos3, type = "l",xlab = "data points",ylab = "Position", main = "Platform 3")       ################# Amanda ####################
-    #abline(v = segment, untf = FALSE, col="red",lwd=3)                                                   ################# Amanda ####################
-    #message("please enter T for keeping the fly for analysis and F for deleting it and press enter")
-    #keep_fly3 <- scan(n=1,what= logical())
-    
+
     
     ############################################################### PI rechnen ##############################################
-    
-    
-    
-    
-    
+
     # Save in state variable if the light is on or off taking care of hysteresis
     data$state1 <- ligth_state(data$pos1,Hysteresis)
     data$state2 <- ligth_state(data$pos2,Hysteresis)
@@ -213,12 +250,9 @@ for(j in 1:no_of_screens)
     
     # Allocate PI vectors
     PI_platform1 <- vector("numeric", length = 10)
-    #combo_PI_platform1 <- vector("numeric", length = 5)
     PI_platform2 <- vector("numeric", length = 10)
-    #combo_PI_platform2 <- vector("numeric", length = 5)
     PI_platform3 <- vector("numeric", length = 10)
-    #combo_PI_platform3 <- vector("numeric", length = 5)
-    
+
     # Allocate effect size vectors
     effectsize1 <- vector("numeric", 1)
     effectsize2 <- vector("numeric", 1)
@@ -237,57 +271,7 @@ for(j in 1:no_of_screens)
     on_wiggle3 <- mean(wiggle3[data$state3[-24000]])
     off_wiggle3 <- mean(wiggle3[!data$state3[-24000]])
     
-    # for(m in 2:length(data$n))
-    # {
-    #   if(data$state1[m]=="TRUE" && data$state1[m-1]== "TRUE")
-    #   {
-    #     on_wiggle1 <- on_wiggle1 + abs(data$pos1[m]- data$pos1[m-1])
-    #   }
-    # }
-    # 
-    # for(m in 2:length(data$n))
-    # {
-    #   if(data$state2[m]=="TRUE" && data$state2[m-1]== "TRUE")
-    #   {
-    #     on_wiggle2 <- on_wiggle2 + abs(data$pos2[m]- data$pos2[m-1])
-    #   }
-    # }
-    # 
-    # 
-    # for(m in 2:length(data$n))
-    # {
-    #   if(data$state3[m]=="TRUE" && data$state3[m-1]== "TRUE")
-    #   {
-    #     on_wiggle3 <- on_wiggle3 + abs(data$pos3[m]- data$pos3[m-1])
-    #   }
-    # }
-    # 
-    # ###off_wiggle
-    # for(m in 2:length(data$n))
-    # {
-    #   if(data$state1[m]=="FALSE" && data$state1[m-1]== "FALSE")
-    #   {
-    #     on_wiggle1 <- on_wiggle1 + abs(data$pos1[m]- data$pos1[m-1])
-    #   }
-    # }
-    # 
-    # for(m in 2:length(data$n))
-    # {
-    #   if(data$state2[m]=="FALSE" && data$state2[m-1]== "FALSE")
-    #   {
-    #     on_wiggle2 <- on_wiggle2 + abs(data$pos2[m]- data$pos2[m-1])
-    #   }
-    # }
-    # 
-    # 
-    # for(m in 2:length(data$n))
-    # {
-    #   if(data$state3[m]=="FALSE" && data$state3[m-1]== "FALSE")
-    #   {
-    #     on_wiggle3 <- on_wiggle3 + abs(data$pos3[m]- data$pos3[m-1])
-    #   }
-    # }
-    
+
     ## Apply the PI formula and save it
     for(oo in 1:10){
       PI_platform1[oo] <- calculate_PI(data$state1[segment[oo]:segment[oo+1]])
@@ -295,12 +279,7 @@ for(j in 1:no_of_screens)
       PI_platform3[oo] <- calculate_PI(data$state3[segment[oo]:segment[oo+1]])
     }
     
-    # for(oo in seq(1,11,2)){
-    #   combo_PI_platform1[oo] <- calculate_PI(data$state1[segment[oo]:segment[oo+2]])
-    #   combo_PI_platform2[oo] <- calculate_PI(data$state2[segment[oo]:segment[oo+2]])
-    #   combo_PI_platform3[oo] <- calculate_PI(data$state3[segment[oo]:segment[oo+2]])
-    # }
-    
+
     ## Calculate the effect size by substracting the initial baseline (segments 1 and 2) to the training Periods (3,4,7,8)
     effectsize1 <- mean(PI_platform1[c(3,4,7,8)])-mean(PI_platform1[1:2])
     effectsize2 <- mean(PI_platform2[c(3,4,7,8)])-mean(PI_platform2[1:2])
@@ -321,9 +300,7 @@ for(j in 1:no_of_screens)
     ## Here all conditions should be met: No flat signal, good baseline pretest PI and enough switching 
     if(keep1 && abs(mean(PI_platform1[1:2]))<PI_thres & light_encounter1>2){
       count<-count+1
-      #pos <- pos + data$pos1
       PI_platform[((3*i)-2),] <- PI_platform1
-      #combo_PI_platform[((3*i)-2),] <- combo_PI_platform1
       effectsize[((3*i)-2)] <- effectsize1
       effectsize_reinf[((3*i)-2)] <- just_reinf1
       on_wiggle[((3*i)-2)] <- on_wiggle1
@@ -332,9 +309,7 @@ for(j in 1:no_of_screens)
     
     if(keep2 && abs(mean(PI_platform2[1:2]))<PI_thres & light_encounter2>2){
       count<-count+1
-      #pos <- pos + data$pos2
       PI_platform[((3*i)-1),] <- PI_platform2
-      #combo_PI_platform[((3*i)-1),] <- combo_PI_platform2 
       effectsize[((3*i)-1)] <- effectsize2
       effectsize_reinf[((3*i)-1)] <- just_reinf2
       on_wiggle[((3*i)-1)] <- on_wiggle2
@@ -343,9 +318,7 @@ for(j in 1:no_of_screens)
     
     if(keep3 && abs(mean(PI_platform3[1:2]))<PI_thres & light_encounter3>2){
       count<-count+1
-      #pos <- pos + data$pos3
       PI_platform[((3*i)),] <- PI_platform3
-      #combo_PI_platform[(3*i),] <- combo_PI_platform3
       effectsize[(3*i)] <- effectsize3
       effectsize_reinf[((3*i))] <- just_reinf3
       on_wiggle[((3*i))] <- on_wiggle3
@@ -353,39 +326,15 @@ for(j in 1:no_of_screens)
     }
   }
   
-  ##  effectsize_mat[1:length(effectsize!=0.0),j] <- effectsize
-  #  on_wiggle_mat[1:length(on_wiggle!=0.0),j]<-on_wiggle
-  ##  off_wiggle_mat[1:length(off_wiggle!=0.0),j]<-off_wiggle
+
   effectsize_mat[1:length(effectsize),j] <- effectsize
   on_wiggle_mat[1:length(on_wiggle),j] <- on_wiggle
   off_wiggle_mat[1:length(off_wiggle),j] <- off_wiggle
   just_rein_mat[1:length(effectsize_reinf),j] <- effectsize_reinf
   all_PIs <- rbind(all_PIs,PI_platform)
   used_traces[j]<-count
-  #effectsize <- vector("numeric", length = 3*Nexp_total) #resetting 
-  #on_wiggle <- vector("numeric", length = 3*Nexp_total) #resetting
-  #off_wiggle <- vector("numeric", length = 3*Nexp_total) #resetting
-  
-  
-  #pos <- (pos)/count
-  
-  #plot(data$n, pos, type = "l",xlab = "data points",ylab = "mean_Position", main = "all_Platforms")
-  #abline(v = segment, untf = FALSE, col="red",lwd=3)
-  
-  # saurabh effectsize and other parameters
-  
-  
-  # mean_effectsize_mat <- apply(effectsize,2,function(effectsize){mean(effectsize, na.rm = TRUE)})
-  #  std_dev_effectsize_mat <- apply(effectsize,2,function(effectsize){sd(effectsize, na.rm = TRUE)})
-  
-  
-  
-  # std_err_effectsize_mat <- std_dev_effectsize/count**0.5
-  
-  
-  #barplot(mean_effectsize)
-  #ggplot
-  
+
+
   # Boxplot of the PIs
   boxplot(PI_platform, col="grey",xlab="",ylab="PI",main=group_name, ylim = c(-1, 1),names=c("Pretest","Pretest","Training","Training","Test","Test","Training","Training","Test","Test"), cex.lab=1.5, cex.axis = 1.2)
   abline(h = 0, untf = FALSE, col="black",lwd=3)
@@ -403,27 +352,16 @@ for(j in 1:no_of_screens)
 }
 
 
-#colnames(effectsize_mat) = c("blue1","blue3","blue4","darkgreen1","darkgreen2","darkgreen3","darkpink1","darkpink3","darkpink4","darkyellow1","darkyellow2","darkyellow3","darkyellow4","lightgreen1","lightgreen2","lightgreen4","lightyellow2","orange1","orange3","orange4","red1","red2","red3","white1","white2","positivecontrol")
 colnames(effectsize_mat) <- as.character(all_screens)
-#colnames(just_rein_mat) = c("blue1","blue3","blue4","darkgreen1","darkgreen2","darkgreen3","darkpink1","darkpink3","darkpink4","darkyellow1","darkyellow2","darkyellow3","darkyellow4","lightgreen1","lightgreen2","lightgreen4","lightyellow2","orange1","orange3","orange4","red1","red2","red3","white1","white2","positivecontrol")
 colnames(just_rein_mat) <- as.character(all_screens)
 
-#colnames(diff_wiggle_mat) = c("blue1","blue3","blue4","darkgreen1","darkgreen2","darkgreen3","darkpink1","darkpink3","darkpink4","darkyellow1","darkyellow2","darkyellow3","darkyellow4","lightgreen1","lightgreen2","lightgreen4","lightyellow2","orange1","orange3","orange4","red1","red2","red3","white1","white2","positivecontrol")
-#colnames(diff_wiggle_mat) <- as.character(all_screens)
-
-#boxplot(effectsize_mat,col="yelow",xlab="",ylab="reinforcement", names = c("blue1","blue3","blue4","darkgreen1","darkgreen2","darkgreen3","darkpink1","darkpink3","darkpink4","darkyellow1","darkyellow2","darkyellow3","darkyellow4","lightgreen1","lightgreen2","lightgreen4","lightyellow2","orange1","orange3","orange4","red1","red2","red3","white1","white2","positivecontrol"), cex.lab=1.0, cex.axis = 0.5, las=2)
 boxplot(effectsize_mat,col="yellow",xlab="",ylab="reinforcement - pretest", names = as.character(all_screens), cex.lab=1.0, cex.axis = 1, las=2)
 abline(h = 0, untf = FALSE, col="black",lwd=3)
 
-#boxplot(effectsize_mat,col="blue",xlab="",ylab="reinforcement",names=c("red1","red2","darkyellow2","blue3","blue4","darkpink2","darkpink3","darkpink4","orange1","orange3","lightgreen1","positivecontrol"), cex.lab=1.0, cex.axis = 0.5, las=2)
-#abline(h = 0, untf = FALSE, col="black",lwd=3)
-
-#boxplot(just_rein_mat,col="yellow",xlab="",ylab="just_reinforcement",c("blue1","blue3","blue4","darkgreen1","darkgreen2","darkgreen3","darkpink1","darkpink3","darkpink4","darkyellow1","darkyellow2","darkyellow3","darkyellow4","lightgreen1","lightgreen2","lightgreen4","lightyellow2","orange1","orange3","orange4","red1","red2","red3","white1","white2","positivecontrol"), cex.lab=1.0, cex.axis = 0.5, las=2)
 boxplot(just_rein_mat,col="yellow",xlab="",ylab="just_reinforcement", names = as.character(all_screens), cex.lab=1.0, cex.axis = 1, las=2)
 abline(h = 0, untf = FALSE, col="black",lwd=3)
 
 diff_wiggle_mat=on_wiggle_mat-off_wiggle_mat
-#boxplot(diff_wiggle_mat,col="yellow",xlab="",ylab="wiggle difference(on - off)", c("blue1","blue3","blue4","darkgreen1","darkgreen2","darkgreen3","darkpink1","darkpink3","darkpink4","darkyellow1","darkyellow2","darkyellow3","darkyellow4","lightgreen1","lightgreen2","lightgreen4","lightyellow2","orange1","orange3","orange4","red1","red2","red3","white1","white2","positivecontrol"),cex.lab=1.0, cex.axis = 0.5, las = 2)
 boxplot(diff_wiggle_mat,col="yellow",xlab="",ylab="wiggle difference(on - off)", names = as.character(all_screens),cex.lab=1.0, cex.axis = 1, las = 2)
 abline(h = 0, untf = FALSE, col="black",lwd=3)
 
@@ -434,19 +372,28 @@ std_dev_effectsize <- apply(effectsize_mat,2,function(effectsize_mat){sd(effects
 
 std_err_effectsize <- std_dev_effectsize/count**0.5
 
-barCenters <- barplot(height = mean_effectsize,
+mean_effectsize_ord <- mean_effectsize[order(mean_effectsize, decreasing = TRUE)]
+std_err_effectsize_ord <- std_err_effectsize[order(mean_effectsize, decreasing = TRUE)]
+
+# Save in vector graphics
+setEPS()
+postscript("joystick_barplot.eps")
+#svg(filename="joystick_barplot.svg", width=20, height=20, pointsize=24)
+
+barCenters <- barplot(height = mean_effectsize_ord,
                       beside = true, las = 2,ylim=c(-1,1),
                       cex.names = 1,
-                      main = "mixed Reinforcement with yellow light",
+                      main = "Reinforcement with yellow light",
                       ylab = "Reinforcement",
                       border = "black", axes = TRUE)
 
 
-segments(barCenters, mean_effectsize - std_err_effectsize, barCenters,
-         mean_effectsize + std_err_effectsize, lwd = 1.5)
+segments(barCenters, mean_effectsize_ord - std_err_effectsize_ord, barCenters,
+         mean_effectsize_ord + std_err_effectsize_ord, lwd = 1.5)
 
-#barplot(mean_effectsize,col="yellow",xlab="",ylab="reinforcement",main = "Amanda", cex.lab=1.0, cex.axis = 0.5)
-#abline(h = 0, untf = FALSE, col="black",lwd=3)
+dev.off()
+
+write.table(rbind(mean_effectsize_ord,std_err_effectsize_ord), "joystick_screen_results.txt")
 
 ## Wiggle barplot
 
@@ -457,7 +404,7 @@ std_err_diff_wiggle <- std_dev_diff_wiggle/count**0.5
 barCenters <- barplot(height = mean_diff_wiggle,
                       beside = true, las = 2,ylim=c(-0.3,0.3),
                       cex.names = 1,
-                      main = "mixed Wiggle with yellow light",
+                      main = "Wiggle with yellow light",
                       ylab = "wiggle difference(on - off)",
                       border = "black", axes = TRUE)
 
@@ -475,7 +422,7 @@ segments(barCenters, mean_diff_wiggle - std_err_diff_wiggle, barCenters,
 boxplot(all_PIs,main="overall PI for the whole screen - mixed")
 
 names(used_traces)<-all_screens
-barplot(used_traces,las=2,main = "mixed experiments")
-
+barplot(used_traces,las=2,main = barplot_title)
 
 ####################################
+
