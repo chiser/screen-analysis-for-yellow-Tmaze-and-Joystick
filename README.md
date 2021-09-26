@@ -43,6 +43,16 @@ format in the current directory (barplot from Figure 3 in paper) with its data i
 
 
 
+T-maze with yellow light 
+
+The analysis is in the script Tmaze_yellow_screen_analysis.r. As an input it requires only to adapt the working directory variable to the path where your repository is. Then it will read automatically the data from /data/yellow_T_maze. There are no input parameter to change and as an output you get:
+
+  - Two barplots showing the weighted average and the normal average. The latter will be saved in .eps format for the publication.
+
+  - ATTENTION: Many csv files will be created with the name of the blinded names (eg. blue1.csv) in the working directory. You can use them if you need them or just delete them.
+  
+
+
 Additional scripts from the unused folder:
 
 plot_mean_trace_per_line.R is a script for the Joystick data for plotting the mean position across time as a line chart and a boxplot with the standard deviation of the position for each of the 10 experiment blocks. It needs as an input:
@@ -70,5 +80,3 @@ The script takes into account the hysteresis which is by default 0 and it calcul
   
   
 
-
-T-maze with yellow light  
