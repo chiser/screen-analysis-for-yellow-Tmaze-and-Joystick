@@ -21,7 +21,7 @@ Optional parameters to modify:
   - unblind: by default TRUE in case if you want to see the real names from the blinded experiment.
 
 The output of this script consist of several tables/graphs but only one graph will be saved in eps
-format in the current directory (barplot from Figure 3 in paper) with its data in a text file. All the plots are:
+format in the current directory (barplot from Figure 3 in paper) with its data in a text file (joystick_screen_results.txt). All the plots are:
 
   - Line plot with individual fly PIs over the ten segments stratified by each group
   
